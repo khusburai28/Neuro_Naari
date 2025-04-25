@@ -1,0 +1,7 @@
+flask
+flask-cors
+nest_asyncio
+langchain
+langchain-google-genai
+langchain-chroma
+pydantic
