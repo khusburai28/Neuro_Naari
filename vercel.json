@@ -1,25 +1,27 @@
 {
-    "builds": [
-      {
-        "src": "app.py",
-        "use": "@vercel/python"
-      },
-      {
-        "src": "frontend/package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "frontend/dist"
-        }
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist",
+        "buildCommand": "npm run build",
+        "cwd": "frontend"
       }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "app.py"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "frontend/dist/$1"
-      }
-    ]
-  }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "app.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/dist/$1"
+    }
+  ]
+}
