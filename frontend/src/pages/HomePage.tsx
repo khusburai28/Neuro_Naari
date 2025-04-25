@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <img 
-                src="public\khusbu.jpg" 
+                src="/khusbu.jpg" 
                 alt="Khusbu Rai" 
                 className="w-full h-64 object-cover"
               />
@@ -87,7 +87,7 @@ const HomePage: React.FC = () => {
 
             <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <img 
-                src="public\manya.jpeg" 
+                src="/manya.jpeg" 
                 alt="Manya Joshi" 
                 className="w-full h-64 object-cover"
               />
@@ -102,7 +102,7 @@ const HomePage: React.FC = () => {
 
             <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <img 
-                src="public\nikita.jpeg" 
+                src="/nikita.jpeg" 
                 alt="Nikita Babbar" 
                 className="w-full h-64 object-cover"
               />
@@ -242,7 +242,7 @@ const HomePage: React.FC = () => {
                 </div>
                 {/* Additional Image */}
                 <img 
-                  src="public\cb.jpeg" 
+                  src="/cb.jpeg" 
                   alt="AI Assistant Visualization" 
                   className="w-full rounded-xl shadow-lg"
                 />
