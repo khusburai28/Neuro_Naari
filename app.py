@@ -326,7 +326,7 @@ def get_chatbot_instance():
     return chatbot
 
 # --- API Endpoint ---
-@app.route('/chat', methods=['POST', 'OPTIONS']) # Keep OPTIONS
+@app.route('/api/chat', methods=['POST', 'OPTIONS']) # Keep OPTIONS
 async def chat_endpoint():
     """Handles incoming chat messages."""
     if request.method == 'OPTIONS':
