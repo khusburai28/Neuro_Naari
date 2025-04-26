@@ -12,6 +12,13 @@ Our mission is to bridge the gap between **skills and employment** for women, es
 
 ---
 
+## Deployed Links
+
+- Frontend: https://neuro-naari-4km6.vercel.app
+- Backend: https://neuro-naari.onrender.com
+
+---
+
 ## 🚀 Tech Stack
 
 ### Frontend
