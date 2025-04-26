@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
       if (!response.ok) throw new Error('Analysis failed');
       
       const data = await response.json();
-      setResumeAnalysis(data.analysis); // Adjust based on actual API response
+      setResumeAnalysis(data.response); // Adjust based on actual API response
       setIsReviewModalOpen(true);
       toast.success('Resume analyzed successfully!');
     } catch (error) {
