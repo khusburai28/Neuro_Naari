@@ -9,12 +9,10 @@
     }
   ],
   "routes": [
-  {
-    "handle": "filesystem"
-  },
-  {
-    "src": "/.*",
-    "dest": "frontend/index.html"
-  }
-]
+    
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ]
 }
