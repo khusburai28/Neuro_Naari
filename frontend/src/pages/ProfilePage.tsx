@@ -264,7 +264,7 @@ const ProfilePage: React.FC = () => {
                 <img 
                   src={profileData.basic.profileImage} 
                   alt={profileData.basic.name} 
-                  className="w-32 h-32 rounded-xl border-4 border-white object-cover shadow-md"
+                  className="w-32 h-full rounded-xl border-4 border-white object-cover shadow-md"
                 />
                 {editMode.basic && (
                   <label className="absolute bottom-2 right-2 bg-primary-600 text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-primary-700 transition-colors">
@@ -282,7 +282,7 @@ const ProfilePage: React.FC = () => {
               <div className="mt-4 md:mt-0 flex-1">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                   <div>
-                    <h1 className="text-2xl font-bold text-secondary-900 mb-1">
+                    <h1 className="text-2xl text-white font-bold text-secondary-900 mb-1">
                       {profileData.basic.name}
                     </h1>
                     <p className="text-secondary-600">{profileData.basic.headline}</p>

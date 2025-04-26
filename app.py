@@ -15,6 +15,8 @@ from flask import Flask, request, jsonify, session, make_response
 from flask_cors import CORS
 import nest_asyncio
 import traceback # For detailed error logging
+from dotenv import load_dotenv
+load_dotenv() 
 
 nest_asyncio.apply()
 
@@ -22,7 +24,7 @@ nest_asyncio.apply()
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-GOOGLE_API_KEY = "AIzaSyDUR3T3yrSxTtUuTK2TqmZjtTz4OlpA8QI"
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 JOB_FILES_PATH = "linkedin_jobs.json" # Example using relative path
 COMMUNITY_FILES_PATH = "scraped_data.json" # Example using relative path
 
