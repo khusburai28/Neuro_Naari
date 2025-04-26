@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useChatbotStore } from '../store/chatbotStore';
 import { toast } from 'react-toastify';
+import ReactMarkdown from 'react-markdown';
 import { 
   User, 
   Mail, 
@@ -72,30 +73,34 @@ const ProfilePage: React.FC = () => {
   };
 
   // Modal component
-  const AnalysisModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Resume Analysis</h2>
-            <button 
-              onClick={() => setIsReviewModalOpen(false)}
-              className="text-secondary-500 hover:text-secondary-700"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          {resumeAnalysis ? (
-            <div className="prose whitespace-pre-wrap">
-              {resumeAnalysis}
+  const AnalysisModal = () => {
+    // Import ReactMarkdown at the top of your file
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Resume Analysis</h2>
+              <button 
+                onClick={() => setIsReviewModalOpen(false)}
+                className="text-secondary-500 hover:text-secondary-700"
+              >
+                <X size={24} />
+              </button>
             </div>
-          ) : (
-            <p className="text-secondary-500">No analysis available</p>
-          )}
+            {resumeAnalysis ? (
+              <div className="prose max-w-none">
+                <ReactMarkdown>{resumeAnalysis}</ReactMarkdown>
+              </div>
+            ) : (
+              <p className="text-secondary-500">No analysis available</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
   
   // Profile data state
   const [profileData, setProfileData] = useState({
