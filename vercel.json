@@ -1,10 +1,6 @@
 {
   "builds": [
     {
-      "src": "app.py",
-      "use": "@vercel/python"
-    },
-    {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -13,10 +9,7 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "app.py"
-    },
+    
     {
       "src": "/(.*)",
       "dest": "frontend/$1"
