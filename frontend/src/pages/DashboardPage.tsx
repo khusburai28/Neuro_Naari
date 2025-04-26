@@ -100,7 +100,7 @@ const DashboardPage: React.FC = () => {
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-6 md:p-8 mb-8 text-white">
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome back, {user?.name}! 👋</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">Welcome back, {user?.name}! 👋</h1>
               <p className="text-primary-100 mb-4 md:mb-0">
                 Your career dashboard shows everything you need to succeed
               </p>

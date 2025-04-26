@@ -73,7 +73,7 @@ const ChatbotWidget: React.FC = () => {
     <div className="fixed bottom-6 right-6 z-20 w-[350px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
       {/* Header */}
       <div className="bg-primary-600 text-white px-4 py-3 flex items-center justify-between">
-        <h3 className="font-semibold">Asha AI Assistant</h3>
+        <h3 className="text-xl font-semibold text-white">Asha AI Assistant</h3>
         <div className="flex items-center space-x-2">
           <button 
             onClick={toggleChatbot}

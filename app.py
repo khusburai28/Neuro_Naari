@@ -241,7 +241,7 @@ class Chatbot:
         return await community_event_search_agent.run(query, context)
 
     async def handle_mentorship_query(self, query: str) -> str:
-        response = await self.llm.ainvoke(f"""You are a helpful mentor for women. Provide a specific, concise and actionable answer to the following query: {query}""")
+        response = await self.llm.ainvoke(f"""You are a helpful mentor for women. Provide a specific, concise and actionable answer in 600 characters to the following query: {query}""")
         return response.content.strip()
 
     async def process_message(self, user_input: str, chat_history: List[str]) -> Tuple[str, List[str]]:
