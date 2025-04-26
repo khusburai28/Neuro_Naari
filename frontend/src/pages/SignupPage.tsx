@@ -67,7 +67,7 @@ const SignupPage: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-white pt-20 pb-12">
+    <div className="min-h-screen bg-gradient-to-b mt-10 from-primary-50 to-white pt-20 pb-12">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="bg-primary-600 px-6 py-8 text-center">

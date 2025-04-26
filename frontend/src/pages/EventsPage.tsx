@@ -38,7 +38,7 @@ const EventsPage: React.FC = () => {
   const featuredEvents = filteredEvents.filter(event => event.isFeatured);
   
   return (
-    <div className="bg-secondary-50 pt-24 pb-16 min-h-screen">
+    <div className="bg-secondary-50 mt-10 pt-24 pb-16 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-secondary-900">Events & Workshops</h1>

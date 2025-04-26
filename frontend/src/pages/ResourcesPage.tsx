@@ -134,7 +134,7 @@ const resources = {
 
 const ResourcesPage: React.FC = () => {
   return (
-    <div className="bg-secondary-50 pt-24 pb-16 min-h-screen">
+    <div className="bg-secondary-50 mt-10 pt-24 pb-16 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         {/* Hero Section */}
         <div className="bg-white rounded-lg shadow-card p-8 mb-12">

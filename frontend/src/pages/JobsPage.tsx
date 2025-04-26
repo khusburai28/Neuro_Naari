@@ -58,7 +58,7 @@ const JobsPage: React.FC = () => {
   };
   
   return (
-    <div className="bg-gray-50 pt-24 pb-16 min-h-screen">
+    <div className="bg-gray-50 pt-24 mt-10 pb-16 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Job Opportunities</h1>

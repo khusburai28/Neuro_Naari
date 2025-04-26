@@ -102,18 +102,18 @@ const Header: React.FC = () => {
                   }`} 
                 />
               </div>
-              <div>
+                <div className="hidden sm:block">
                 <span className={`text-xl font-bold ${
                   scrolled || !isHomePage ? 'text-primary-700' : 'text-white'
                 }`}>
-                  JobsForHer Foundation
+                  JobsForHer
                 </span>
-                <span className={`text-sm block ${
+                <span className={`text-[10px] block ${
                   scrolled || !isHomePage ? 'text-primary-500' : 'text-primary-200'
                 }`}>
                   By Team Neuro Naari
                 </span>
-              </div>
+                </div>
             </Link>
             
             {/* Desktop Navigation */}
@@ -178,7 +178,7 @@ const Header: React.FC = () => {
                       <User size={18} />
                     </div>
                   )}
-                  <span className={`font-medium ${
+                  <span className={`text-sm font-medium ${
                     scrolled || !isHomePage ? 'text-gray-700' : 'text-white'
                   }`}>
                     {user.name}
