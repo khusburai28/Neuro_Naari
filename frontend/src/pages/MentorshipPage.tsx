@@ -161,7 +161,7 @@ const MentorshipPage: React.FC = () => {
   };
   
   return (
-    <div className="bg-secondary-50 mt-10 pt-24 pb-16 min-h-screen">
+    <div className="bg-secondary-50 mt-10 pt-24 min-h-screen">
       <div className="container mx-auto px-4 md:px-6">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -379,13 +379,13 @@ const MentorshipPage: React.FC = () => {
                           </div>
                         </div>
                         
-                        <div className="space-x-2">
-                          <button className="btn-primary">
+                        <div className="flex gap-2">
+                          <button className="btn-primary flex items-center text-sm py-2">
                             <MessageSquare size={16} className="mr-2" />
                             Connect
                           </button>
                           <button 
-                            className="btn-secondary"
+                            className="btn-secondary text-sm py-2"
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedMentor(mentor);
