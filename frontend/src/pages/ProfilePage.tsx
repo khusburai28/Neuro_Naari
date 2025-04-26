@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import { 
   User, 
   Mail, 
-  Phone, 
   MapPin, 
   Calendar, 
   Briefcase, 
@@ -45,7 +44,6 @@ const ProfilePage: React.FC = () => {
     if (!e.target.files?.[0]) return;
 
     const file = e.target.files[0];
-    setResume(file);
     
     try {
       setIsAnalyzing(true);
@@ -64,6 +62,7 @@ const ProfilePage: React.FC = () => {
       setResumeAnalysis(data.response); // Adjust based on actual API response
       setIsReviewModalOpen(true);
       toast.success('Resume analyzed successfully!');
+      setResume(file);
     } catch (error) {
       toast.error('Failed to analyze resume');
       console.error('Resume analysis error:', error);
@@ -236,6 +235,7 @@ const ProfilePage: React.FC = () => {
   });
   
   // Handle profile image change
+  // Handle profile image change
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -247,13 +247,12 @@ const ProfilePage: React.FC = () => {
               ...prev.basic,
               profileImage: event.target.result
             }
-          }));
+          } as typeof prev));
         }
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
-  
   // Toggle edit mode for a section
   const toggleEditMode = (section: string) => {
     setEditMode(prev => ({
@@ -1042,6 +1041,7 @@ const ProfilePage: React.FC = () => {
                 <div className="text-center p-6 border-2 border-dashed border-secondary-300 rounded-lg">
                   <FileText size={36} className="text-secondary-400 mx-auto mb-3" />
                   <p className="text-secondary-600 mb-4">Upload your resume to get feedback</p>
+              
                   <input 
                     type="file" 
                     id="resume" 
@@ -1052,14 +1052,14 @@ const ProfilePage: React.FC = () => {
                   />
                   <label 
                     htmlFor="resume" 
-                    className={`btn-primary cursor-pointer inline-block ${
+                    className={`btn-primary cursor-pointer inline-flex items-center ${
                       isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
                     {isAnalyzing ? (
                       <>
                         <svg 
-                          className="animate-spin h-4 w-4 mr-2 inline-block" 
+                          className="animate-spin h-4 w-4 mr-2" 
                           xmlns="http://www.w3.org/2000/svg" 
                           fill="none" 
                           viewBox="0 0 24 24"
@@ -1071,7 +1071,7 @@ const ProfilePage: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <Upload size={18} className="mr-2 inline-block" />
+                        <Upload size={18} className="mr-2" />
                         Upload Resume
                       </>
                     )}
