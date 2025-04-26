@@ -435,6 +435,11 @@ async def resume_review_endpoint():
         return jsonify({"error": "Method not allowed"}), 405
 
 
+@app.route('/', methods=['GET'])
+def index():
+    """Renders the index page."""
+    return "Welcome to the Neuro Naari API!"
+
 # Helper function for CORS preflight response (needed for POST with JSON)
 def _build_cors_preflight_response():
     response = make_response()
