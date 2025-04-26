@@ -367,6 +367,37 @@ async def chat_endpoint():
     else:
         return jsonify({"error": "Method not allowed"}), 405
 
+@app.route('/api/resume_review', methods=['POST', 'OPTIONS'])
+async def resume_review_endpoint():
+    """Handles resume review requests."""
+    if request.method == 'OPTIONS':
+        return _build_cors_preflight_response()
+    elif request.method == 'POST':
+        chatbot = get_chatbot_instance()
+        if not chatbot:
+            print("Error: Chatbot failed to initialize.")
+            return jsonify({"error": "Chatbot service is not available."}), 503
+
+        if not request.is_json:
+            return jsonify({"error": "Request must be JSON"}), 400
+
+        data = request.get_json()
+        resume_text = data.get('resume')
+
+        if not resume_text:
+            return jsonify({"error": "Missing 'resume' in request body"}), 400
+
+        try:
+            response = await chatbot.llm.ainvoke(f"Please review the following resume and provide feedback: {resume_text}")
+            return jsonify({"response": response.content.strip()})
+        except Exception as e:
+            print(f"Error in /resume_review endpoint processing POST request: {e}")
+            traceback.print_exc()
+            return jsonify({"error": "An internal server error occurred processing your message."}), 500
+    else:
+        return jsonify({"error": "Method not allowed"}), 405
+
+
 # Helper function for CORS preflight response (needed for POST with JSON)
 def _build_cors_preflight_response():
     response = make_response()
