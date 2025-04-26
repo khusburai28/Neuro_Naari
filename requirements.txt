@@ -6,4 +6,5 @@ langchain-google-genai
 langchain-chroma
 pydantic
 gunicorn
+PyPDF2
 python-dotenv

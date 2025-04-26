@@ -14,6 +14,10 @@ from flask import Flask, request, jsonify, session, make_response
 # Import CORS
 from flask_cors import CORS
 import nest_asyncio
+from werkzeug.utils import secure_filename
+import os
+import PyPDF2
+import tempfile
 import traceback # For detailed error logging
 from dotenv import load_dotenv
 load_dotenv() 
@@ -104,6 +108,7 @@ class CommunityEventSearchAgent:
         except json.JSONDecodeError:
             # If direct loading fails, try to extract JSON from a code block
             import re
+
             json_match = re.search(r"```json\n(.*?)\n```", content, re.DOTALL)
             if json_match:
                 json_str = json_match.group(1).strip()
@@ -369,7 +374,7 @@ async def chat_endpoint():
 
 @app.route('/api/resume_review', methods=['POST', 'OPTIONS'])
 async def resume_review_endpoint():
-    """Handles resume review requests."""
+    """Handles resume review requests for PDF files."""
     if request.method == 'OPTIONS':
         return _build_cors_preflight_response()
     elif request.method == 'POST':
@@ -378,22 +383,54 @@ async def resume_review_endpoint():
             print("Error: Chatbot failed to initialize.")
             return jsonify({"error": "Chatbot service is not available."}), 503
 
-        if not request.is_json:
-            return jsonify({"error": "Request must be JSON"}), 400
-
-        data = request.get_json()
-        resume_text = data.get('resume')
-
-        if not resume_text:
-            return jsonify({"error": "Missing 'resume' in request body"}), 400
-
+        # Check if file is in the request
+        if 'resume' not in request.files:
+            return jsonify({"error": "No resume file provided"}), 400
+            
+        resume_file = request.files['resume']
+        
+        # Check if file has a name and is PDF
+        if resume_file.filename == '':
+            return jsonify({"error": "No file selected"}), 400
+        
+        if not resume_file.filename.lower().endswith('.pdf'):
+            return jsonify({"error": "Only PDF files are supported"}), 400
+            
         try:
-            response = await chatbot.llm.ainvoke(f"Please review the following resume and provide feedback: {resume_text}")
+            # Create a temporary file to save the uploaded PDF
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
+                resume_file.save(temp_file.name)
+                temp_filename = temp_file.name
+                
+            # Extract text from PDF
+            resume_text = ""
+            with open(temp_filename, 'rb') as pdf_file:
+                pdf_reader = PyPDF2.PdfReader(pdf_file)
+                for page_num in range(len(pdf_reader.pages)):
+                    resume_text += pdf_reader.pages[page_num].extract_text()
+            
+            # Delete temporary file
+            os.unlink(temp_filename)
+            
+            # If no text was extracted
+            if not resume_text.strip():
+                return jsonify({"error": "Could not extract text from the PDF"}), 400
+                
+            # Analyze the resume
+            response = await chatbot.llm.ainvoke(
+                "You are an expert resume reviewer for women in tech. "
+                "Please analyze the following resume and provide specific, actionable feedback "
+                "on content, format, skills presentation, and how to improve it. "
+                "Focus on helping the candidate highlight their strengths and address weaknesses. "
+                f"Here's the resume text:\n\n{resume_text}"
+            )
+            
             return jsonify({"response": response.content.strip()})
+            
         except Exception as e:
             print(f"Error in /resume_review endpoint processing POST request: {e}")
             traceback.print_exc()
-            return jsonify({"error": "An internal server error occurred processing your message."}), 500
+            return jsonify({"error": "An internal server error occurred processing your resume."}), 500
     else:
         return jsonify({"error": "Method not allowed"}), 405
 

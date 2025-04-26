@@ -248,7 +248,6 @@ GOOGLE_API_KEY=your-api-key-here
 - Add user feedback (👍/👎) on AI responses
 - Allow saving and revisiting chat history
 - Improve intent classification with custom prompt tuning
-- Add file upload for resume review
 
 ---
 

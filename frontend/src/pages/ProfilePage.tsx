@@ -33,9 +33,70 @@ const ProfilePage: React.FC = () => {
   // Profile sections state
   const [activeSection, setActiveSection] = useState<string>('basic');
   const [editMode, setEditMode] = useState<Record<string, boolean>>({});
-  
-  // Form validation state
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [resume, setResume] = useState<File | null>(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [resumeAnalysis, setResumeAnalysis] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+
+  // Modified resume upload handler
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files?.[0]) return;
+
+    const file = e.target.files[0];
+    setResume(file);
+    
+    try {
+      setIsAnalyzing(true);
+      const formData = new FormData();
+      formData.append('resume', file);
+
+      const response = await fetch('https://neuro-naari.onrender.com/api/resume_review', {
+        method: 'POST',
+        body: formData,
+        // Add headers if needed: headers: { Authorization: `Bearer ${user?.token}` }
+      });
+
+      if (!response.ok) throw new Error('Analysis failed');
+      
+      const data = await response.json();
+      setResumeAnalysis(data.analysis); // Adjust based on actual API response
+      setIsReviewModalOpen(true);
+      toast.success('Resume analyzed successfully!');
+    } catch (error) {
+      toast.error('Failed to analyze resume');
+      console.error('Resume analysis error:', error);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  // Modal component
+  const AnalysisModal = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Resume Analysis</h2>
+            <button 
+              onClick={() => setIsReviewModalOpen(false)}
+              className="text-secondary-500 hover:text-secondary-700"
+            >
+              <X size={24} />
+            </button>
+          </div>
+          {resumeAnalysis ? (
+            <div className="prose whitespace-pre-wrap">
+              {resumeAnalysis}
+            </div>
+          ) : (
+            <p className="text-secondary-500">No analysis available</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
   
   // Profile data state
   const [profileData, setProfileData] = useState({
@@ -174,9 +235,6 @@ const ProfilePage: React.FC = () => {
     ]
   });
   
-  // Resume state
-  const [resume, setResume] = useState<File | null>(null);
-  
   // Handle profile image change
   const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -193,14 +251,6 @@ const ProfilePage: React.FC = () => {
         }
       };
       reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-  
-  // Handle resume upload
-  const handleResumeUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setResume(e.target.files[0]);
-      toast.success('Resume uploaded successfully!');
     }
   };
   
@@ -254,6 +304,8 @@ const ProfilePage: React.FC = () => {
   
   return (
     <div className="bg-secondary-50 pt-24 pb-16">
+      {isReviewModalOpen && <AnalysisModal />}
+
       <div className="container mx-auto px-4 md:px-6">
         {/* Profile Header */}
         <div className="bg-white rounded-2xl shadow-sm border border-secondary-100 overflow-hidden mb-8">
@@ -956,7 +1008,6 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
             
-            {/* Resume Section */}
             <div className="bg-white rounded-xl shadow-sm border border-secondary-100 p-6">
               <h2 className="text-lg font-semibold mb-4">Resume</h2>
               
@@ -980,69 +1031,55 @@ const ProfilePage: React.FC = () => {
                     </button>
                   </div>
                   
-                  <div className="bg-primary-50 rounded-lg p-4">
-                    <h3 className="text-sm font-medium text-primary-900 mb-2">Resume Score: 78/100</h3>
-                    <div className="space-y-2">
-                      <div>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-primary-700">Content</span>
-                          <span className="text-primary-700">82/100</span>
-                        </div>
-                        <div className="h-1.5 bg-primary-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-primary-600 rounded-full" style={{ width: '82%' }}></div>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-primary-700">Keywords</span>
-                          <span className="text-primary-700">75/100</span>
-                        </div>
-                        <div className="h-1.5 bg-primary-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-primary-600 rounded-full" style={{ width: '75%' }}></div>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-primary-700">Format</span>
-                          <span className="text-primary-700">85/100</span>
-                        </div>
-                        <div className="h-1.5 bg-primary-200 rounded-full overflow-hidden">
-                          <div className="h-full bg-primary-600 rounded-full" style={{ width: '85%' }}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
                   <button 
-                    onClick={() => toggleChatbot()}
+                    onClick={() => setIsReviewModalOpen(true)}
                     className="btn-primary w-full"
                   >
-                    Get Resume Tips
+                    View Analysis
                   </button>
                 </div>
               ) : (
                 <div className="text-center p-6 border-2 border-dashed border-secondary-300 rounded-lg">
                   <FileText size={36} className="text-secondary-400 mx-auto mb-3" />
-                  <p className="text-secondary-600 mb-4">Upload your resume to improve your job matches</p>
+                  <p className="text-secondary-600 mb-4">Upload your resume to get feedback</p>
                   <input 
                     type="file" 
                     id="resume" 
                     accept=".pdf,.doc,.docx" 
                     onChange={handleResumeUpload}
                     className="hidden" 
+                    disabled={isAnalyzing}
                   />
                   <label 
                     htmlFor="resume" 
-                    className="btn-primary cursor-pointer inline-block"
+                    className={`btn-primary cursor-pointer inline-block ${
+                      isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                   >
-                    <Upload size={18} className="mr-2 inline-block" />
-                    Upload Resume
+                    {isAnalyzing ? (
+                      <>
+                        <svg 
+                          className="animate-spin h-4 w-4 mr-2 inline-block" 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          fill="none" 
+                          viewBox="0 0 24 24"
+                        >
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Upload size={18} className="mr-2 inline-block" />
+                        Upload Resume
+                      </>
+                    )}
                   </label>
                 </div>
               )}
             </div>
+            
             
             {/* Profile Stats */}
             <div className="bg-white rounded-xl shadow-sm border border-secondary-100 p-6">
